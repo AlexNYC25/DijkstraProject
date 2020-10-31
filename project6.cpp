@@ -1,20 +1,21 @@
+
+/*
+    Project 6: Dijkstra's algorithm
+    By Alexis Montes
+
+    compile: g++ project6.cpp -o project6
+    execute ./project6 SSS_Date.txt SSSFile.txt debug.txt
+*/
+
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <vector>
-#include <sstream>
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 using namespace std;
 
 
 class DijktraSSS {
     
-
-
 
     public:
     int numberNodes;
@@ -41,26 +42,27 @@ class DijktraSSS {
         bestCostAry = new int[numberNodes];
 
         // initialize 2d array for each row
-        for(int i = 0; i < numberNodes; i++){
-            costMatrix[i] = new int[numberNodes];
+        for(int x = 0; x < numberNodes; x++){
+            costMatrix[x] = new int[numberNodes];
         }
 
         // fill in initial values of cost matrix
-        for(int i = 0; i < numberNodes; i++){
-            for(int j = 0; j<numberNodes; j++){
-                if(i == j){
-                    costMatrix[i][j] = 0;
+        for(int x = 0; x < numberNodes; x++){
+            for(int y = 0; y<numberNodes; y++){
+                if(x == y){
+                    costMatrix[x][y] = 0;
                 } 
                 else{ 
-                    costMatrix[i][j] = 99999;
+                    costMatrix[x][y] = 99999;
                 }
             }
         }
 
-        for(int i = 0; i < numberNodes; i++){
-            fatherArray[i] = i;
-            bestCostAry[i] = INT_MAX;
-            markedArr[i] = 0;
+        for(int x = 0; x < numberNodes; x++){
+            fatherArray[x] = x;
+            // set up as largest possible value as initial value
+            bestCostAry[x] = INT_MAX;
+            markedArr[x] = 0;
 
         }
 
@@ -75,7 +77,7 @@ class DijktraSSS {
         int cost;
         
         while(inFile >> node1 >> node2 >> cost){
-            cout << node1 << " " << node2 << " " << cost << endl;
+            //cout << node1 << " " << node2 << " " << cost << endl;
             costMatrix[node1 -1][node2 -1] = cost;
             // determine how many ints are in the file
         }
@@ -88,8 +90,8 @@ class DijktraSSS {
         will use the sourceNode data value from the object instead of a file
     */
     void setBestCostAry(){
-        for(int i = 0; i<numberNodes; i++){   
-            bestCostAry[i] = costMatrix[sourceNode-1][i];
+        for(int x = 0; x < numberNodes; x++){   
+            bestCostAry[x] = costMatrix[sourceNode-1][x];
         }
     }
 
@@ -97,8 +99,8 @@ class DijktraSSS {
         set all to itself
     */
     void setFatherAry(){
-        for(int i = 0; i < numberNodes; i++){
-            fatherArray[i] = sourceNode;
+        for(int x = 0; x < numberNodes; x++){
+            fatherArray[x] = sourceNode;
         }
     }
 
@@ -106,12 +108,12 @@ class DijktraSSS {
         set sourceNode to 1 and all other to 0
     */
     void setMarkedAry(){
-        for(int i = 0; i<numberNodes; i++){
-            if(i == sourceNode-1){
-                markedArr[i] = 1;    
+        for(int x = 0; x < numberNodes; x++){
+            if(x == sourceNode-1){
+                markedArr[x] = 1;    
             } 
             else{
-                markedArr[i] = 0; 
+                markedArr[x] = 0; 
             } 
         }
     }
@@ -123,10 +125,10 @@ class DijktraSSS {
         int minNode = 0;
         int minCost = 99999;
 
-        for(int i = 0; i < numberNodes; i++){
-            if(bestCostAry[i] < minCost && markedArr[i] == 0){
-                minNode = i;
-                minCost = bestCostAry[i];
+        for(int x = 0; x < numberNodes; x++){
+            if(bestCostAry[x] < minCost && markedArr[x] == 0){
+                minNode = x;
+                minCost = bestCostAry[x];
             }
         }
         return minNode +1;
@@ -160,8 +162,8 @@ class DijktraSSS {
         debugFile << "The fatherArray is: " << endl;
 
 
-        for(int i = 0; i < numberNodes; i++){
-            debugFile << fatherArray[i] << " ";
+        for(int x = 0; x < numberNodes; x++){
+            debugFile << fatherArray[x] << " ";
         }
 
         debugFile << endl;
@@ -169,8 +171,8 @@ class DijktraSSS {
 
         debugFile << "The bestCostArray is: " << endl;
 
-        for(int i = 0; i < numberNodes; i++){
-            debugFile << bestCostAry[i] << " ";
+        for(int x = 0; x < numberNodes; x++){
+            debugFile << bestCostAry[x] << " ";
         }
 
         debugFile << endl;
@@ -178,8 +180,8 @@ class DijktraSSS {
 
         debugFile << "The markedArray is: " << endl;
 
-        for(int i = 0; i < numberNodes; i++){
-            debugFile << markedArr[i] << " ";
+        for(int x = 0; x < numberNodes; x++){
+            debugFile << markedArr[x] << " ";
         }
             
         debugFile << endl << endl;
@@ -210,9 +212,12 @@ class DijktraSSS {
 
     }
 
+    /*
+        Helper function to determine if all values in marked array have been marked
+    */
     bool allMarked(){
-        for(int i = 0; i < numberNodes; i++){
-            if(markedArr[i]==0){
+        for(int x = 0; x < numberNodes; x++){
+            if(markedArr[x]==0){
                return false; 
             } 
         }
@@ -312,9 +317,9 @@ int main(int argc, char *argv[]){
         graph.sourceNode++;
     }
 
+    // close files
     myFile.close();
     SSSFile.close();
     debugFile.close();
     
-    cout << "Hello world" << endl;
 }
